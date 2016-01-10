@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Simple Map</title>
+    <link href='http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.css' rel="stylesheet" type='text/css'>
+    <link href="css/bootstrap-datepicker.css" rel="stylesheet" type='text/css'>
+    
+    <style>
+      html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      }
+      .map_container{
+      position: relative;
+      width: 100%;
+      padding-bottom: 90%; /* Ratio 16:9 ( 100%/16*9 = 56.25% ) */
+      }
+      .map_container #map{
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      margin: 0;
+      padding: 0;
+      }
+.gly-spin {
+  -webkit-animation: spin 2s infinite linear;
+  -moz-animation: spin 2s infinite linear;
+  -o-animation: spin 2s infinite linear;
+  animation: spin 2s infinite linear;
+}
+@-moz-keyframes spin {
+  0% {
+    -moz-transform: rotate(0deg);
+  }
+  100% {
+    -moz-transform: rotate(359deg);
+  }
+}
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+  }
+}
+@-o-keyframes spin {
+  0% {
+    -o-transform: rotate(0deg);
+  }
+  100% {
+    -o-transform: rotate(359deg);
+  }
+}
+@keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+.main{
+padding-top: 60px}
+    </style>
+  </head>
+  <body>
+  
+<nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Flight search</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="index.html">Search</a></li>
+            <li ><a href="history.html">History</a></li>
+            <li><a href="info.html">Info</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+    
+    <div class='contrainer main'>
+    <div class='row'>
+      <div class="col-xs-12 col-sm-6">
+        <div class="map_container">
+          <div id="map" class="map"></div>
+        </div>
+      </div>
+      <div class='col-xs-12 col-sm-6'>
+        <form class="form-horizontal">
+          <div class="form-group">
+            <label for="from" class="col-sm-2 control-label">From</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="from" placeholder="From">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="to" class="col-sm-2 control-label">To</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="to" placeholder="To">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="radius" class="col-sm-2 control-label">Radius</label>
+            <div class="col-sm-6">
+              <input type="" class="form-control" id="radius" placeholder="Radius" disabled>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="nightsFrom" class="col-sm-2 control-label">Min days to stay</label>
+            <div class="col-sm-6">
+              <input type="" class="form-control" id="nightsFrom" placeholder="Min days to stay">
+              
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="nightsTo" class="col-sm-2 control-label">Max days to stay</label>
+            <div class="col-sm-6">
+              
+              <input type="" class="form-control" id="nightsTo" placeholder="Max days to stay">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="dates" class="col-sm-2 control-label">Pick date(s)</label>
+            <div class="input-group date col-xs-6" style="padding-left: 15px;">
+              <input type="text" class="form-control" id="dates">
+              <span class="input-group-addon">
+              <i class="glyphicon glyphicon-th"></i>
+              </span>                     
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button type="button" id="search" class="btn btn-success has-spinner">
+                
+                Search flight
+                <span class="glyphicon glyphicon-refresh gly-spin" aria-hidden="true" style="display:none"></span>
+              </button>
+            </div>
+          </div>
+        </form>
+        
+        <table class="table" id="search-results">           
+           <tbody></tbody>
+        </table>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>   
+    <script src="app.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCLrCflFvIrzFwp4I-aakW-5qOOuNI6I70&callback=initMap"
+      async defer></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js'></script>
+    <script src='js/bootstrap-datepicker.min.js'></script>
+    <script src="app2.js"> 
+      
+    </script>
+  </body>
+</html>
