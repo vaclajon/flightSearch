@@ -18,8 +18,8 @@ $(document).ajaxStop(function () {
   var dd = today.getDate();
   var mm = today.getMonth() + 1; //January is 0!
   var yyyy = today.getFullYear();
-  var headerOneWay = "<thead><tr><td>From</td><td>To</td><td>Date</td><td>Duration</td><td>Price</td></tr></thead>";
-  var headerReturn = "<thead><tr><td>From</td><td>To</td><td>Date</td><td>Duration</td><td>Return from</td><td>Return to</td><td>Return date</td><td>Return duration</td><td>Price</td></tr></thead>";
+  var headerOneWay = "<thead><tr><th>From</th><th>To</th><th>Date</th><th>Departs at</th><th>Duration</th><th>Price</th></tr></thead>";
+  var headerReturn = "<thead><tr><th>From</th><th>To</th><th>Date</th><th>Departs at</th><th>Duration</th><th>Return from</th><th>Return to</th><th>Return date</th><th>Departs at</th><th>Return duration</th><th>Price</th></tr></thead>";
   if (dd < 10) {
     dd = '0' + dd;
   }
@@ -49,7 +49,7 @@ $(document).ajaxStop(function () {
       "oneforcity": "0",
       "wait_for_refresh": "1",
       "adults": "1",
-      "limit": "10"
+      "limit": "100"
     };
   };
 
@@ -91,11 +91,7 @@ $(document).ajaxStop(function () {
     }
     else {
       query["to"] = to;
-    }
-
-
-
-
+    } 
 
     var nightFrom = $("#nightsFrom").val();
     var nightTo = $("#nightsTo").val();
@@ -107,6 +103,9 @@ $(document).ajaxStop(function () {
 
 
     dates = $('#dates').val();
+
+        
+
     $.each(dates.split(';'), function (index, value) {
       query["dateFrom"] = value;
       query["dateTo"] = value;
@@ -114,6 +113,8 @@ $(document).ajaxStop(function () {
 
 
     });
+    query["dateFrom"] = dates;
+    saveQuery(query);
   });
 
   function saveQuery(query) {
@@ -147,9 +148,7 @@ $(document).ajaxStop(function () {
     return $.get('https://api.skypicker.com/flights', decodeURIComponent($.param(options, false))).done(function (data) {
       var table = $("#search-results");
       var res = data.data;
-      if (res.length > 0) {
-        saveQuery(options);
-      }
+      
       displayResults(res, data.currency, options["typeFlight"]);
 
     });
@@ -170,7 +169,18 @@ $(document).ajaxStop(function () {
     }
     return dd + '.' + mm + '.' + yyyy;
   }
-
+  function ms2hours(ms) {
+    var d = new Date(ms * 1000);
+    var mm = d.getMinutes();
+    var hh = d.getHours(); //January is 0!   
+     if (mm < 10) {
+      mm = '0' + mm;
+    }
+    if (hh < 10) {
+      hh = '0' + hh;
+    }
+    return hh + ':' + mm;
+  }
   function displayResults(newData, currency, typeFlight) {
     var $table = $("#search-results");
     var $tbody = $("<tbody>");
@@ -189,28 +199,40 @@ $(document).ajaxStop(function () {
       var from = value.flyFrom;
       var to = value.flyTo;
       var airportTo = from;
-      var returnFrom, returnTo, returnDate;
+      var returnFrom, returnTo, returnDate, returnHours;
       var idx = 0;
+      var flightsId = "";
       while (airportTo !== to) {
         airportTo = value.route[idx].flyTo;
-
+        flightsId += value.route[idx].id+"|";
         idx++;
       }
-
-      row.append($("<td>").html(value.flyFrom));
+      if(typeFlight === "return"){
+      for (var i = idx; i < value.route.length; i++) {
+          returnTo = value.route[i].flyTo;
+          flightsId += value.route[idx].id+"|";
+        }
+      }
+      var link =$("<a>");
+      link.attr("href", "https://cz.skypicker.com/booking?flightsId="+flightsId+"&price="+value.price+"&token="+value.booking_token);
+      link.html(value.flyFrom);
+      row.append($("<td>").append(link));
       row.append($("<td>").html(airportTo));
       row.append($("<td>").html(ms2date(value.dTimeUTC)));
+      row.append($("<td>").html(ms2hours(value.dTimeUTC)));
       row.append($("<td>").html(value.fly_duration));
+
       if (typeFlight === "return") {
         returnFrom = value.route[idx].flyFrom;
         returnDate = ms2date(value.route[idx].dTimeUTC);
-        for (var i = idx; i < value.route.length; i++) {
-          returnTo = value.route[i].flyTo;
-        }
+        returnHours = ms2hours(value.route[idx].dTimeUTC);        
+        
         row.append($("<td>").html(returnFrom));
         row.append($("<td>").html(returnTo));
         row.append($("<td>").html(returnDate));
+        row.append($("<td>").html(returnHours));
         row.append($("<td>").html(value.return_duration));
+                
       }
       row.append($("<td>").html(value.price + " " + currency));
 

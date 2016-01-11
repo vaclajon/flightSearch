@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Simple Map</title>
-    <link href='http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.css' rel="stylesheet" type='text/css'>
+    <link href='css/bootstrap.min.css' rel="stylesheet" type='text/css'>
     <link href="css/bootstrap-datepicker.css" rel="stylesheet" type='text/css'>
     
     <style>
@@ -17,7 +17,7 @@
       .map_container{
       position: relative;
       width: 100%;
-      padding-bottom: 90%; /* Ratio 16:9 ( 100%/16*9 = 56.25% ) */
+      padding-bottom: 40%; /* Ratio 16:9 ( 100%/16*9 = 56.25% ) */
       }
       .map_container #map{
       position: absolute;
@@ -69,7 +69,11 @@
   }
 }
 .main{
-padding-top: 60px}
+padding-top: 60px
+}
+th{
+  font-weight: bold;
+}
     </style>
   </head>
   <body>
@@ -97,48 +101,47 @@ padding-top: 60px}
     
     <div class='contrainer main'>
     <div class='row'>
-      <div class="col-xs-12 col-sm-6">
+      <div class="col-xs-12 col-sm-5">         
+        
         <div class="map_container">
           <div id="map" class="map"></div>
         </div>
-      </div>
-      <div class='col-xs-12 col-sm-6'>
-        <form class="form-horizontal">
+        <form class="form-horizontal" style="padding-top:10px">
           <div class="form-group">
-            <label for="from" class="col-sm-2 control-label">From</label>
-            <div class="col-sm-6">
+            <label for="from" class="col-sm-4 control-label">From</label>
+            <div class="col-sm-7">
               <input type="text" class="form-control" id="from" placeholder="From">
             </div>
           </div>
           <div class="form-group">
-            <label for="to" class="col-sm-2 control-label">To</label>
-            <div class="col-sm-6">
+            <label for="to" class="col-sm-4 control-label">To</label>
+            <div class="col-sm-7">
               <input type="text" class="form-control" id="to" placeholder="To">
             </div>
           </div>
           <div class="form-group">
-            <label for="radius" class="col-sm-2 control-label">Radius</label>
-            <div class="col-sm-6">
+            <label for="radius" class="col-sm-4 control-label">Radius</label>
+            <div class="col-sm-7">
               <input type="" class="form-control" id="radius" placeholder="Radius" disabled>
             </div>
           </div>
           <div class="form-group">
-            <label for="nightsFrom" class="col-sm-2 control-label">Min days to stay</label>
-            <div class="col-sm-6">
-              <input type="" class="form-control" id="nightsFrom" placeholder="Min days to stay">
+            <label for="nightsFrom" class="col-sm-4 control-label">Min nights to stay</label>
+            <div class="col-sm-7">
+              <input type="" class="form-control" id="nightsFrom" placeholder="Min nights to stay">
               
             </div>
           </div>
           <div class="form-group">
-            <label for="nightsTo" class="col-sm-2 control-label">Max days to stay</label>
-            <div class="col-sm-6">
+            <label for="nightsTo" class="col-sm-4 control-label">Max nights to stay</label>
+            <div class="col-sm-7">
               
-              <input type="" class="form-control" id="nightsTo" placeholder="Max days to stay">
+              <input type="" class="form-control" id="nightsTo" placeholder="Max nights to stay">
             </div>
           </div>
           <div class="form-group">
-            <label for="dates" class="col-sm-2 control-label">Pick date(s)</label>
-            <div class="input-group date col-xs-6" style="padding-left: 15px;">
+            <label for="dates" class="col-sm-4 control-label">Pick date(s)</label>
+            <div class="input-group date col-xs-7" style="padding-left: 15px;">
               <input type="text" class="form-control" id="dates">
               <span class="input-group-addon">
               <i class="glyphicon glyphicon-th"></i>
@@ -155,17 +158,21 @@ padding-top: 60px}
             </div>
           </div>
         </form>
+      </div>
+      
+      <div class='col-xs-12 col-sm-7'>
+        
         
         <table class="table" id="search-results">           
            <tbody></tbody>
         </table>
       </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>   
+    <script src="js/jquery.js"></script>   
     <script src="app.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCLrCflFvIrzFwp4I-aakW-5qOOuNI6I70&callback=initMap"
       async defer></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js'></script>
+    <script src='js/bootstrap.min.js'></script>
     <script src='js/bootstrap-datepicker.min.js'></script>
     <script src="app2.js"> 
       
